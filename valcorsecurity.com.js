@@ -1,7 +1,7 @@
 (function () {
   var CREDIT_URL = "https://vxlnce.com/";
   var CREDIT_TEXT = "Vexellence";
-  var LOG = "[vxl-credit]";
+  var LOG = "[valcorsec]";
   var POLL_MS = 200;
   var MAX_ATTEMPTS = 150; // ~30 seconds
 
@@ -11,28 +11,28 @@
     if (intervalId !== null) {
       clearInterval(intervalId);
       intervalId = null;
-      console.log(LOG, "polling stopped:", reason);
+      // console.log(LOG, "polling stopped:", reason);
     }
   }
 
   function insertCredit() {
     var headings = document.querySelectorAll("h3.elementor-heading-title");
-    console.log(LOG, "scan — headings found:", headings.length);
+    // console.log(LOG, "scan — headings found:", headings.length);
 
     for (var i = 0; i < headings.length; i++) {
       var text = (headings[i].textContent || "").trim();
       if (text.indexOf("Copyright") === -1) continue;
 
-      console.log(LOG, "Copyright heading found:", text);
+      // console.log(LOG, "Copyright heading found:", text);
 
       var container = headings[i].closest(".elementor-widget-container");
       if (!container) {
-        console.warn(LOG, "container not found yet, will retry");
+        // console.warn(LOG, "container not found yet, will retry");
         return false;
       }
 
       if (container.querySelector(".vxl-credit")) {
-        console.log(LOG, "already inserted");
+        // console.log(LOG, "already inserted");
         return true;
       }
 
@@ -47,16 +47,16 @@
         "</a>";
 
       container.appendChild(p);
-      console.log(LOG, "credit inserted successfully");
+      // console.log(LOG, "credit inserted successfully");
       return true;
     }
 
-    console.log(LOG, "Copyright heading not in DOM yet");
+    // console.log(LOG, "Copyright heading not in DOM yet");
     return false;
   }
 
   function tryInsert(attempt) {
-    console.log(LOG, "attempt", attempt);
+    // console.log(LOG, "attempt", attempt);
 
     if (insertCredit()) {
       stopPolling("success on attempt " + attempt);
@@ -74,7 +74,7 @@
   function startPolling() {
     if (intervalId !== null) return;
 
-    console.log(LOG, "starting poll every", POLL_MS, "ms");
+    // console.log(LOG, "starting poll every", POLL_MS, "ms");
 
     var attempt = 0;
     if (tryInsert(++attempt)) return;
@@ -85,7 +85,7 @@
   }
 
   function boot() {
-    console.log(LOG, "boot — readyState:", document.readyState);
+    // console.log(LOG, "boot — readyState:", document.readyState);
     startPolling();
   }
 
@@ -97,7 +97,7 @@
 
   // Extra safety net after images/resources load
   window.addEventListener("load", function () {
-    console.log(LOG, "window load — final check");
+    // console.log(LOG, "window load — final check");
     if (insertCredit()) stopPolling("success on window load");
   });
 })();
