@@ -1,4 +1,4 @@
-(function () {
+```(function () {
     var CREDIT_URL = "https://vxlnce.com/";
     var CREDIT_TEXT = "Vexellence";
     function insertCredit() {
@@ -37,4 +37,5 @@
     } else {
       start();
     }
-  })();
+  })();```
+
